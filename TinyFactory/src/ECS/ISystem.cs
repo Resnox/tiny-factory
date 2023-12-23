@@ -2,7 +2,7 @@
 
 namespace TinyFactory.ECS;
 
-public interface ISystem: IDisposable
+public interface ISystem : IDisposable
 {
     void Initialize();
 

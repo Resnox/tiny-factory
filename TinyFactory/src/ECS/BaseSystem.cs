@@ -2,7 +2,7 @@
 
 namespace TinyFactory.ECS;
 
-public abstract class BaseSystem: ISystem
+public abstract class BaseSystem : ISystem
 {
     protected BaseSystem(World world)
     {
@@ -10,16 +10,28 @@ public abstract class BaseSystem: ISystem
     }
 
     protected World world { get; private set; }
-    
-    public virtual void Dispose() {}
 
-    public virtual void Initialize() {}
+    public virtual void Dispose()
+    {
+    }
 
-    public virtual void BeforeUpdate(in double deltaTime) {}
+    public virtual void Initialize()
+    {
+    }
 
-    public virtual void Update(in double deltaTime) {}
+    public virtual void BeforeUpdate(in double deltaTime)
+    {
+    }
 
-    public virtual void AfterUpdate(in double deltaTime) {}
+    public virtual void Update(in double deltaTime)
+    {
+    }
 
-    public virtual void Render() {}
+    public virtual void AfterUpdate(in double deltaTime)
+    {
+    }
+
+    public virtual void Render()
+    {
+    }
 }
