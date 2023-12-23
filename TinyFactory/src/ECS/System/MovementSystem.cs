@@ -1,10 +1,8 @@
-﻿using System;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 using Arch.Core;
-using TinyFactory.Component;
-using TinyFactory.ECS;
+using TinyFactory.ECS.Component;
 
-namespace TinyFactory.System;
+namespace TinyFactory.ECS.System;
 
 public class MovementSystem : BaseSystem
 {
@@ -35,8 +33,8 @@ public class MovementSystem : BaseSystem
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Update(ref Position position)
         {
-            position.X += 500 * deltaTime;
-            position.Y += 500 * deltaTime;
+            position.X += 0 * deltaTime;
+            position.Y += 0 * deltaTime;
         }
     }
 }

@@ -2,11 +2,11 @@ using System;
 using Arch.Core;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using TinyFactory.Component;
 using TinyFactory.ECS;
-using TinyFactory.System;
+using TinyFactory.ECS.Component;
+using TinyFactory.ECS.System;
+using TinyFactory.Engine;
 using XnaGame = Microsoft.Xna.Framework.Game;
-using JScheduler = JobScheduler.JobScheduler;
 
 namespace TinyFactory;
 
@@ -17,14 +17,16 @@ internal class Game : XnaGame
     private SystemGroup SystemGroup;
     private Texture2D TestTexture;
     private World World;
+    private Camera Camera;
 
     public Game()
     {
         Gdm = new GraphicsDeviceManager(this);
         // Typically you would load a config here...
-        Gdm.PreferredBackBufferWidth = 1280;
-        Gdm.PreferredBackBufferHeight = 720;
+        Gdm.PreferredBackBufferWidth = 480;
+        Gdm.PreferredBackBufferHeight = 480;
         Gdm.IsFullScreen = false;
+        Window.AllowUserResizing = true;
         Gdm.SynchronizeWithVerticalRetrace = true;
 
         Content.RootDirectory = "Content";
@@ -36,23 +38,33 @@ internal class Game : XnaGame
 
         World = World.Create();
 
-        var random = new Random();
-        for (var i = 0; i < 100_000; i++)
-            World.Create(
-                new Position
-                {
-                    X = random.NextSingle() * 1280 - 64,
-                    Y = random.NextSingle() * 720 - 64
-                },
-                new Sprite
-                {
-                    Texture = TestTexture
-                }
-            );
+        Camera = new Camera(GraphicsDevice.Viewport);
+        Window.ClientSizeChanged += (sender, args) =>
+        {
+            Camera.SetBounds(GraphicsDevice.Viewport.Bounds);
+        };
+
+        for (int i = -10; i <= 10; i++)
+        {
+            for (int j = -10; j <= 10; j++)
+            {
+                World.Create(
+                    new Position
+                    {
+                        X = i,
+                        Y = j
+                    },
+                    new Sprite
+                    {
+                        Texture = TestTexture
+                    }
+                );
+            }
+        }
 
         SystemGroup = new SystemGroup();
         SystemGroup.Add(new MovementSystem(World));
-        SystemGroup.Add(new SpriteRendererSystem(World, SpriteBatch));
+        SystemGroup.Add(new SpriteRendererSystem(World, SpriteBatch, Camera));
         SystemGroup.Initialize();
     }
     
@@ -98,7 +110,7 @@ internal class Game : XnaGame
     {
         // Render stuff in here. Do NOT run game logic in here!
         GraphicsDevice.Clear(Color.CornflowerBlue);
-
+        
         SpriteBatch.Begin();
         base.Draw(gameTime);
         SystemGroup.Render();

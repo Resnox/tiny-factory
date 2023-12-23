@@ -1,4 +1,4 @@
-﻿namespace TinyFactory.Component;
+﻿namespace TinyFactory.ECS.Component;
 
 public struct Position
 {
