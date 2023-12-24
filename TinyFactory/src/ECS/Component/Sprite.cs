@@ -1,15 +1,16 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using TinyFactory.Engine;
 
 namespace TinyFactory.ECS.Component;
 
 public struct Sprite
 {
-    public Texture2D Texture;
+    public int TextureIndex;
     public Color Color = Color.White;
 
     public Sprite()
     {
-        Texture = null;
+        TextureIndex = 0;
     }
 }

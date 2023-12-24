@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.IO;
 using Arch.Core;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -17,6 +19,7 @@ internal class Game : XnaGame
     private SystemGroup SystemGroup;
     private Texture2D TestTexture;
     private World World;
+    private TextureManager TextureManager;
     private Camera Camera;
 
     public Game()
@@ -28,25 +31,26 @@ internal class Game : XnaGame
         Gdm.IsFullScreen = false;
         Window.AllowUserResizing = true;
         Gdm.SynchronizeWithVerticalRetrace = true;
-
+        
         Content.RootDirectory = "Content";
     }
 
     protected override void Initialize()
     {
         base.Initialize();
-
+        
         World = World.Create();
-
+        SystemGroup = new SystemGroup();
         Camera = new Camera(GraphicsDevice.Viewport);
+        
         Window.ClientSizeChanged += (sender, args) =>
         {
             Camera.SetBounds(GraphicsDevice.Viewport.Bounds);
         };
 
-        for (int i = -10; i <= 10; i++)
+        for (var i = -10; i <= 10; i++)
         {
-            for (int j = -10; j <= 10; j++)
+            for (var j = -10; j <= 10; j++)
             {
                 World.Create(
                     new Position
@@ -56,15 +60,14 @@ internal class Game : XnaGame
                     },
                     new Sprite
                     {
-                        Texture = TestTexture
+                        TextureIndex = 1
                     }
                 );
             }
         }
-
-        SystemGroup = new SystemGroup();
+        
         SystemGroup.Add(new MovementSystem(World));
-        SystemGroup.Add(new SpriteRendererSystem(World, SpriteBatch, Camera));
+        SystemGroup.Add(new SpriteRendererSystem(World, TextureManager, SpriteBatch, Camera));
         SystemGroup.Initialize();
     }
     
@@ -73,8 +76,19 @@ internal class Game : XnaGame
         // Load textures, sounds, and so on in here...
         base.LoadContent();
 
-        TestTexture = Content.Load<Texture2D>("Test");
         SpriteBatch = new SpriteBatch(GraphicsDevice);
+        TextureManager = new TextureManager(GraphicsDevice);
+        
+        var dir = new DirectoryInfo(Content.RootDirectory + "/");
+        if (!dir.Exists)
+            throw new DirectoryNotFoundException();
+        
+        var files = dir.GetFiles("*.*");
+        foreach (var file in files)
+        {
+            var textureName = file.Name.Split('.')[0];
+            TextureManager.AddTexture(textureName, Content.Load<Texture2D>(textureName));
+        }
     }
 
     protected override void UnloadContent()
@@ -83,7 +97,7 @@ internal class Game : XnaGame
         base.UnloadContent();
 
         SpriteBatch.Dispose();
-        TestTexture.Dispose();
+        TestTexture?.Dispose();
     }
 
     protected override void OnExiting(object sender, EventArgs args)
@@ -110,7 +124,6 @@ internal class Game : XnaGame
     {
         // Render stuff in here. Do NOT run game logic in here!
         GraphicsDevice.Clear(Color.CornflowerBlue);
-        
         SpriteBatch.Begin();
         base.Draw(gameTime);
         SystemGroup.Render();
