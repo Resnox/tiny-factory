@@ -21,6 +21,7 @@ internal class Game : XnaGame
     private World World;
     private TextureManager TextureManager;
     private Camera Camera;
+    private InputManager InputManager;
 
     public Game()
     {
@@ -41,8 +42,9 @@ internal class Game : XnaGame
         
         World = World.Create();
         SystemGroup = new SystemGroup();
-        Camera = new Camera(GraphicsDevice.Viewport);
-        
+        InputManager = new InputManager();
+        Camera = new Camera(InputManager, GraphicsDevice.Viewport.Bounds);
+
         Window.ClientSizeChanged += (sender, args) =>
         {
             Camera.SetBounds(GraphicsDevice.Viewport.Bounds);
@@ -111,13 +113,18 @@ internal class Game : XnaGame
     {
         var deltaTime = gameTime.ElapsedGameTime.TotalSeconds;
 
+        InputManager.BeforeUpdate();
         SystemGroup.BeforeUpdate(deltaTime);
 
         // Run game logic in here. Do NOT render anything here!
         base.Update(gameTime);
+
+        Camera.Update(deltaTime);
+        
         SystemGroup.Update(deltaTime);
 
         SystemGroup.AfterUpdate(deltaTime);
+        InputManager.AfterUpdate();
     }
 
     protected override void Draw(GameTime gameTime)
