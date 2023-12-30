@@ -2,8 +2,8 @@
 
 public struct Position
 {
-    public double X;
-    public double Y;
+    public float PosX = 0;
+    public float PosY = 0;
 
     public Position()
     {

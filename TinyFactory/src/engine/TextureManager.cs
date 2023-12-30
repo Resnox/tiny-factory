@@ -6,26 +6,28 @@ namespace TinyFactory.Engine;
 
 public class TextureManager
 {
-    private List<Texture2D> textures;
-    private Dictionary<string, int> nameIndex;
-
-    private GraphicsDevice graphicsDevice;
+    private readonly GraphicsDevice graphicsDevice;
+    private readonly Dictionary<string, int> nameIndex;
+    private readonly List<Texture2D> textures;
 
     public TextureManager(GraphicsDevice graphicsDevice)
     {
         textures = new List<Texture2D>();
         nameIndex = new Dictionary<string, int>();
-        
+
         this.graphicsDevice = graphicsDevice;
-        
+
         AddWhitePixelTexture();
     }
+
+    public Texture2D this[int index] => textures[index];
+    public Texture2D this[string textureName] => textures[nameIndex[textureName]];
 
     public void AddWhitePixelTexture()
     {
         var whitePixel = new Texture2D(graphicsDevice, 1, 1, false, SurfaceFormat.Color);
-        whitePixel.SetData(new[] {Color.White});
-        
+        whitePixel.SetData(new[] { Color.White });
+
         AddTexture("whitePixel", whitePixel);
     }
 
@@ -34,7 +36,4 @@ public class TextureManager
         nameIndex.Add(textureName, textures.Count);
         textures.Add(texture);
     }
-
-    public Texture2D this[int index] => textures[index];
-    public Texture2D this[string textureName] => textures[nameIndex[textureName]];
 }

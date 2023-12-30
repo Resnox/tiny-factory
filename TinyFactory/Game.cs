@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using Arch.Core;
 using Microsoft.Xna.Framework;
@@ -15,13 +14,13 @@ namespace TinyFactory;
 internal class Game : XnaGame
 {
     private readonly GraphicsDeviceManager Gdm;
+    private Camera Camera;
+    private InputManager InputManager;
     private SpriteBatch SpriteBatch;
     private SystemGroup SystemGroup;
     private Texture2D TestTexture;
-    private World World;
     private TextureManager TextureManager;
-    private Camera Camera;
-    private InputManager InputManager;
+    private World World;
 
     public Game()
     {
@@ -32,47 +31,39 @@ internal class Game : XnaGame
         Gdm.IsFullScreen = false;
         Window.AllowUserResizing = true;
         Gdm.SynchronizeWithVerticalRetrace = true;
-        
-        Content.RootDirectory = "Content";
+        Content.RootDirectory = "content";
     }
 
     protected override void Initialize()
     {
         base.Initialize();
-        
+
         World = World.Create();
         SystemGroup = new SystemGroup();
         InputManager = new InputManager();
-        Camera = new Camera(InputManager, GraphicsDevice.Viewport.Bounds);
+        Camera = new Camera(InputManager, GraphicsDevice.Viewport);
 
-        Window.ClientSizeChanged += (sender, args) =>
-        {
-            Camera.SetBounds(GraphicsDevice.Viewport.Bounds);
-        };
+        Window.ClientSizeChanged += (sender, args) => { Camera.Viewport = GraphicsDevice.Viewport; };
 
-        for (var i = -10; i <= 10; i++)
-        {
-            for (var j = -10; j <= 10; j++)
-            {
-                World.Create(
-                    new Position
-                    {
-                        X = i,
-                        Y = j
-                    },
-                    new Sprite
-                    {
-                        TextureIndex = 1
-                    }
-                );
-            }
-        }
-        
-        SystemGroup.Add(new MovementSystem(World));
-        SystemGroup.Add(new SpriteRendererSystem(World, TextureManager, SpriteBatch, Camera));
+        for (var i = 0; i <= 250; i++)
+        for (var j = 0; j <= 250; j++)
+            World.Create(
+                new Position
+                {
+                    PosX = i,
+                    PosY = j
+                },
+                new Sprite
+                {
+                    TextureIndex = 1
+                }
+            );
+
+        //SystemGroup.Add(new MovementSystem(World));
+        SystemGroup.Add(new SpriteRendererSystem(World, TextureManager, SpriteBatch));
         SystemGroup.Initialize();
     }
-    
+
     protected override void LoadContent()
     {
         // Load textures, sounds, and so on in here...
@@ -80,11 +71,11 @@ internal class Game : XnaGame
 
         SpriteBatch = new SpriteBatch(GraphicsDevice);
         TextureManager = new TextureManager(GraphicsDevice);
-        
+
         var dir = new DirectoryInfo(Content.RootDirectory + "/");
         if (!dir.Exists)
             throw new DirectoryNotFoundException();
-        
+
         var files = dir.GetFiles("*.*");
         foreach (var file in files)
         {
@@ -104,34 +95,43 @@ internal class Game : XnaGame
 
     protected override void OnExiting(object sender, EventArgs args)
     {
-        base.OnExiting(sender, args);       
-        
+        base.OnExiting(sender, args);
+
         World.Destroy(World);
     }
 
     protected override void Update(GameTime gameTime)
     {
-        var deltaTime = gameTime.ElapsedGameTime.TotalSeconds;
+        var deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
+        // PreUpdate //
         InputManager.BeforeUpdate();
         SystemGroup.BeforeUpdate(deltaTime);
+        Camera.BeforeUpdate(deltaTime);
 
-        // Run game logic in here. Do NOT render anything here!
+        // Update //
         base.Update(gameTime);
-
         Camera.Update(deltaTime);
-        
         SystemGroup.Update(deltaTime);
 
+        // PostUpdate //
         SystemGroup.AfterUpdate(deltaTime);
         InputManager.AfterUpdate();
+        Console.WriteLine("FPS: " + (int)(1d / gameTime.ElapsedGameTime.TotalSeconds));
     }
 
     protected override void Draw(GameTime gameTime)
     {
         // Render stuff in here. Do NOT run game logic in here!
         GraphicsDevice.Clear(Color.CornflowerBlue);
-        SpriteBatch.Begin();
+        SpriteBatch.Begin(SpriteSortMode.Deferred,
+            BlendState.AlphaBlend,
+            null,
+            null,
+            null,
+            null,
+            Camera.Transform
+        );
         base.Draw(gameTime);
         SystemGroup.Render();
         SpriteBatch.End();

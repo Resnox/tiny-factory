@@ -1,40 +1,36 @@
 ﻿using System.Runtime.CompilerServices;
 using Arch.Core;
 using TinyFactory.ECS.Component;
+using TinyFactory.Engine.update;
 
 namespace TinyFactory.ECS.System;
 
-public class MovementSystem : BaseSystem
+public class MovementSystem : AbstractSystem, IUpdatable
 {
     private readonly QueryDescription queryDescription = new QueryDescription().WithAll<Position>();
 
     public MovementSystem(World world) : base(world)
     {
-        
     }
 
-    public override void Update(in double deltaTime)
+    public void Update(in float deltaTime)
     {
-        base.Update(in deltaTime);
-
         var movementJob = new MoveJob(deltaTime);
-        world.InlineQuery<MoveJob, Position>(in queryDescription, ref movementJob);
+        World.InlineQuery<MoveJob, Position>(in queryDescription, ref movementJob);
     }
 
     private readonly struct MoveJob : IForEach<Position>
     {
-        private readonly double deltaTime;
+        private readonly float deltaTime;
 
-        public MoveJob(double deltaTime)
+        public MoveJob(float deltaTime)
         {
             this.deltaTime = deltaTime;
         }
-    
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Update(ref Position position)
         {
-            position.X += 0 * deltaTime;
-            position.Y += 0 * deltaTime;
         }
     }
 }

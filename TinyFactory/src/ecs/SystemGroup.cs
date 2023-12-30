@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using TinyFactory.Engine.update;
 
 namespace TinyFactory.ECS;
 
-public class SystemGroup : ISystem
+public class SystemGroup : ISystem, IInitializable, IPreUpdatable, IUpdatable, IPostUpdatable, IRenderable, IDisposable
 {
     protected readonly List<ISystem> Systems = new();
 
@@ -13,39 +14,39 @@ public class SystemGroup : ISystem
             Add(system);
     }
 
+    public void Dispose()
+    {
+        for (var index = 0; index < Systems.Count; index++)
+        {
+            var entry = Systems[index];
+            if (entry is IDisposable disposable) disposable.Dispose();
+        }
+    }
+
     public void Initialize()
     {
         for (var index = 0; index < Systems.Count; index++)
         {
             var entry = Systems[index];
-            entry.Initialize();
+            if (entry is IInitializable initializable) initializable.Initialize();
         }
     }
 
-    public void BeforeUpdate(in double deltaTime)
+    public void AfterUpdate(in float deltaTime)
     {
         for (var index = 0; index < Systems.Count; index++)
         {
             var entry = Systems[index];
-            entry.BeforeUpdate(deltaTime);
+            if (entry is IPostUpdatable postUpdatable) postUpdatable.AfterUpdate(deltaTime);
         }
     }
 
-    public void Update(in double deltaTime)
+    public void BeforeUpdate(in float deltaTime)
     {
         for (var index = 0; index < Systems.Count; index++)
         {
             var entry = Systems[index];
-            entry.Update(deltaTime);
-        }
-    }
-
-    public void AfterUpdate(in double deltaTime)
-    {
-        for (var index = 0; index < Systems.Count; index++)
-        {
-            var entry = Systems[index];
-            entry.AfterUpdate(deltaTime);
+            if (entry is IPreUpdatable preUpdatable) preUpdatable.BeforeUpdate(deltaTime);
         }
     }
 
@@ -54,16 +55,16 @@ public class SystemGroup : ISystem
         for (var index = 0; index < Systems.Count; index++)
         {
             var entry = Systems[index];
-            entry.Render();
+            if (entry is IRenderable renderable) renderable.Render();
         }
     }
 
-    public void Dispose()
+    public void Update(in float deltaTime)
     {
         for (var index = 0; index < Systems.Count; index++)
         {
             var entry = Systems[index];
-            entry.Dispose();
+            if (entry is IUpdatable updatable) updatable.Update(deltaTime);
         }
     }
 
