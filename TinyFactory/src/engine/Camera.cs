@@ -16,7 +16,6 @@ public class Camera : IPreUpdatable, IUpdatable
     {
         X = 0;
         Y = 0;
-        Rotation = 0;
         Viewport = viewport;
         Zoom = 1;
         InputManager = inputManager;
@@ -26,7 +25,6 @@ public class Camera : IPreUpdatable, IUpdatable
     public Viewport Viewport { get; set; }
     public float X { get; set; }
     public float Y { get; set; }
-    public float Rotation { get; set; }
 
     public float Zoom
     {
@@ -37,7 +35,6 @@ public class Camera : IPreUpdatable, IUpdatable
     public void BeforeUpdate(in float deltaTime)
     {
         Transform = Matrix.CreateTranslation(-X, -Y, 0) *
-                    Matrix.CreateRotationZ(Rotation) *
                     Matrix.CreateScale(Math.Max(
                         Viewport.Width / Zoom / 2,
                         Viewport.Height / Zoom / 2

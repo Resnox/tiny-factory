@@ -45,8 +45,8 @@ internal class Game : XnaGame
 
         Window.ClientSizeChanged += (sender, args) => { Camera.Viewport = GraphicsDevice.Viewport; };
 
-        for (var i = 0; i <= 250; i++)
-        for (var j = 0; j <= 250; j++)
+        for (var i = 0; i <= 1000; i++)
+        for (var j = 0; j <= 1000; j++)
             World.Create(
                 new Position
                 {
@@ -117,7 +117,6 @@ internal class Game : XnaGame
         // PostUpdate //
         SystemGroup.AfterUpdate(deltaTime);
         InputManager.AfterUpdate();
-        Console.WriteLine("FPS: " + (int)(1d / gameTime.ElapsedGameTime.TotalSeconds));
     }
 
     protected override void Draw(GameTime gameTime)
@@ -135,5 +134,6 @@ internal class Game : XnaGame
         base.Draw(gameTime);
         SystemGroup.Render();
         SpriteBatch.End();
+        Console.WriteLine("FPS: " + (int)(1d / gameTime.ElapsedGameTime.TotalSeconds));
     }
 }
