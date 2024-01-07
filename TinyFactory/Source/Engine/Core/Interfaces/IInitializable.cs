@@ -1,4 +1,4 @@
-﻿namespace TinyFactory.Engine.update;
+﻿namespace TinyFactory.Engine.Core.Interfaces;
 
 public interface IInitializable
 {

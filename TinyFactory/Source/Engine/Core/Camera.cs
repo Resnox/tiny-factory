@@ -2,9 +2,10 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using TinyFactory.Engine.update;
+using TinyFactory.Engine.Core.Interfaces;
+using TinyFactory.Engine.Input;
 
-namespace TinyFactory.Engine;
+namespace TinyFactory.Engine.Core;
 
 public class Camera : IPreUpdatable, IUpdatable
 {

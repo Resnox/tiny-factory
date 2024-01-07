@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using TinyFactory.Engine.update;
+using TinyFactory.Engine.Core.Interfaces;
 
 namespace TinyFactory.ECS;
 

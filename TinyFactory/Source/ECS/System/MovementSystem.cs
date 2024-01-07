@@ -1,7 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 using Arch.Core;
 using TinyFactory.ECS.Component;
-using TinyFactory.Engine.update;
+using TinyFactory.Engine.Core.Interfaces;
 
 namespace TinyFactory.ECS.System;
 

@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace TinyFactory.Engine;
+namespace TinyFactory.Engine.Texture;
 
 public class TextureManager
 {

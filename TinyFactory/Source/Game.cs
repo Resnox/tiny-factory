@@ -7,6 +7,9 @@ using TinyFactory.ECS;
 using TinyFactory.ECS.Component;
 using TinyFactory.ECS.System;
 using TinyFactory.Engine;
+using TinyFactory.Engine.Core;
+using TinyFactory.Engine.Input;
+using TinyFactory.Engine.Texture;
 using XnaGame = Microsoft.Xna.Framework.Game;
 
 namespace TinyFactory;
@@ -31,7 +34,7 @@ internal class Game : XnaGame
         Gdm.IsFullScreen = false;
         Window.AllowUserResizing = true;
         Gdm.SynchronizeWithVerticalRetrace = true;
-        Content.RootDirectory = "content";
+        Content.RootDirectory = "Content";
     }
 
     protected override void Initialize()
@@ -45,8 +48,8 @@ internal class Game : XnaGame
 
         Window.ClientSizeChanged += (sender, args) => { Camera.Viewport = GraphicsDevice.Viewport; };
 
-        for (var i = 0; i <= 1000; i++)
-        for (var j = 0; j <= 1000; j++)
+        for (var i = 0; i <= 10; i++)
+        for (var j = 0; j <= 10; j++)
             World.Create(
                 new Position
                 {

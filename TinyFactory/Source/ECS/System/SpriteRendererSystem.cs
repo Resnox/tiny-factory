@@ -4,7 +4,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using TinyFactory.ECS.Component;
 using TinyFactory.Engine;
-using TinyFactory.Engine.update;
+using TinyFactory.Engine.Core.Interfaces;
+using TinyFactory.Engine.Texture;
 
 namespace TinyFactory.ECS.System;
 
