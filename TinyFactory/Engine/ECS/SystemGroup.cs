@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using TinyFactory.Engine.Core.Interfaces;
 
-namespace TinyFactory.ECS;
+namespace TinyFactory.Engine.ECS;
 
 public class SystemGroup : ISystem, IInitializable, IPreUpdatable, IUpdatable, IPostUpdatable, IRenderable, IDisposable
 {
@@ -14,6 +14,8 @@ public class SystemGroup : ISystem, IInitializable, IPreUpdatable, IUpdatable, I
             Add(system);
     }
 
+    #region IDisposable Members
+
     public void Dispose()
     {
         for (var index = 0; index < Systems.Count; index++)
@@ -22,6 +24,10 @@ public class SystemGroup : ISystem, IInitializable, IPreUpdatable, IUpdatable, I
             if (entry is IDisposable disposable) disposable.Dispose();
         }
     }
+
+    #endregion
+
+    #region IInitializable Members
 
     public void Initialize()
     {
@@ -32,6 +38,10 @@ public class SystemGroup : ISystem, IInitializable, IPreUpdatable, IUpdatable, I
         }
     }
 
+    #endregion
+
+    #region IPostUpdatable Members
+
     public void AfterUpdate(in float deltaTime)
     {
         for (var index = 0; index < Systems.Count; index++)
@@ -40,6 +50,10 @@ public class SystemGroup : ISystem, IInitializable, IPreUpdatable, IUpdatable, I
             if (entry is IPostUpdatable postUpdatable) postUpdatable.AfterUpdate(deltaTime);
         }
     }
+
+    #endregion
+
+    #region IPreUpdatable Members
 
     public void BeforeUpdate(in float deltaTime)
     {
@@ -50,6 +64,10 @@ public class SystemGroup : ISystem, IInitializable, IPreUpdatable, IUpdatable, I
         }
     }
 
+    #endregion
+
+    #region IRenderable Members
+
     public void Render()
     {
         for (var index = 0; index < Systems.Count; index++)
@@ -59,6 +77,10 @@ public class SystemGroup : ISystem, IInitializable, IPreUpdatable, IUpdatable, I
         }
     }
 
+    #endregion
+
+    #region IUpdatable Members
+
     public void Update(in float deltaTime)
     {
         for (var index = 0; index < Systems.Count; index++)
@@ -67,6 +89,8 @@ public class SystemGroup : ISystem, IInitializable, IPreUpdatable, IUpdatable, I
             if (entry is IUpdatable updatable) updatable.Update(deltaTime);
         }
     }
+
+    #endregion
 
     public SystemGroup Add(params ISystem[] systems)
     {

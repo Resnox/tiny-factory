@@ -2,12 +2,11 @@
 using Arch.Core;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using TinyFactory.ECS.Component;
-using TinyFactory.Engine;
 using TinyFactory.Engine.Core.Interfaces;
+using TinyFactory.Engine.ECS.Component;
 using TinyFactory.Engine.Texture;
 
-namespace TinyFactory.ECS.System;
+namespace TinyFactory.Engine.ECS.System;
 
 public class SpriteRendererSystem : AbstractSystem, IRenderable
 {
@@ -22,11 +21,17 @@ public class SpriteRendererSystem : AbstractSystem, IRenderable
         this.spriteBatch = spriteBatch;
     }
 
+    #region IRenderable Members
+
     public void Render()
     {
         var render = new RenderJob(textureManager, spriteBatch);
         World.InlineQuery<RenderJob, Position, Sprite>(queryDescription, ref render);
     }
+
+    #endregion
+
+    #region Nested type: RenderJob
 
     private readonly struct RenderJob : IForEach<Position, Sprite>
     {
@@ -51,4 +56,6 @@ public class SpriteRendererSystem : AbstractSystem, IRenderable
             );
         }
     }
+
+    #endregion
 }

@@ -1,6 +1,6 @@
 ﻿using Arch.Core;
 
-namespace TinyFactory.ECS;
+namespace TinyFactory.Engine.ECS;
 
 public abstract class AbstractSystem : ISystem
 {

@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using TinyFactory.Engine.Core.Interfaces;
-using TinyFactory.Engine.Input;
 
 namespace TinyFactory.Engine.Core;
 
@@ -33,6 +32,8 @@ public class Camera : IPreUpdatable, IUpdatable
         set => zoom = value < 0.05f ? 0.05f : value;
     }
 
+    #region IPreUpdatable Members
+
     public void BeforeUpdate(in float deltaTime)
     {
         Transform = Matrix.CreateTranslation(-X, -Y, 0) *
@@ -42,6 +43,10 @@ public class Camera : IPreUpdatable, IUpdatable
                     )) *
                     Matrix.CreateTranslation(Viewport.Width / 2f, Viewport.Height / 2f, 0);
     }
+
+    #endregion
+
+    #region IUpdatable Members
 
     public void Update(in float deltaTime)
     {
@@ -58,4 +63,6 @@ public class Camera : IPreUpdatable, IUpdatable
         X += deltaTime * moveX * 5;
         Y += deltaTime * moveY * 5;
     }
+
+    #endregion
 }

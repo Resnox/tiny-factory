@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace TinyFactory.ECS.Component;
+namespace TinyFactory.Engine.ECS.Component;
 
 public struct Sprite
 {

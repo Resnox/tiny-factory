@@ -1,9 +1,9 @@
 ﻿using System.Runtime.CompilerServices;
 using Arch.Core;
-using TinyFactory.ECS.Component;
 using TinyFactory.Engine.Core.Interfaces;
+using TinyFactory.Engine.ECS.Component;
 
-namespace TinyFactory.ECS.System;
+namespace TinyFactory.Engine.ECS.System;
 
 public class MovementSystem : AbstractSystem, IUpdatable
 {
@@ -13,11 +13,17 @@ public class MovementSystem : AbstractSystem, IUpdatable
     {
     }
 
+    #region IUpdatable Members
+
     public void Update(in float deltaTime)
     {
         var movementJob = new MoveJob(deltaTime);
         World.InlineQuery<MoveJob, Position>(in queryDescription, ref movementJob);
     }
+
+    #endregion
+
+    #region Nested type: MoveJob
 
     private readonly struct MoveJob : IForEach<Position>
     {
@@ -33,4 +39,6 @@ public class MovementSystem : AbstractSystem, IUpdatable
         {
         }
     }
+
+    #endregion
 }
