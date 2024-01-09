@@ -107,18 +107,17 @@ internal class Game : XnaGame
         var deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
         // PreUpdate //
-        InputManager.BeforeUpdate();
         SystemGroup.BeforeUpdate(deltaTime);
         Camera.BeforeUpdate(deltaTime);
 
         // Update //
         base.Update(gameTime);
+        InputManager.Update(deltaTime);
         Camera.Update(deltaTime);
         SystemGroup.Update(deltaTime);
 
         // PostUpdate //
         SystemGroup.AfterUpdate(deltaTime);
-        InputManager.AfterUpdate();
     }
 
     protected override void Draw(GameTime gameTime)

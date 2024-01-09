@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using TinyFactory.Engine.Core.Interfaces;
+using TinyFactory.Engine.Input;
 
 namespace TinyFactory.Engine.Core;
 
