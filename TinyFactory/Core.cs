@@ -3,28 +3,25 @@ using System.IO;
 using Arch.Core;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using TinyFactory.Engine.Core;
 using TinyFactory.Engine.ECS;
 using TinyFactory.Engine.ECS.Component;
 using TinyFactory.Engine.ECS.System;
 using TinyFactory.Engine.Input;
+using TinyFactory.Engine.Input.Conditions;
 using TinyFactory.Engine.Texture;
+using TinyFactory.Game;
 using XnaGame = Microsoft.Xna.Framework.Game;
 
 namespace TinyFactory;
 
-internal class Game : XnaGame
+public class Core : XnaGame
 {
-    private readonly GraphicsDeviceManager Gdm;
-    private Camera Camera;
-    private InputManager InputManager;
-    private SpriteBatch SpriteBatch;
     private SystemGroup SystemGroup;
-    private Texture2D TestTexture;
-    private TextureManager TextureManager;
     private World World;
 
-    public Game()
+    public Core()
     {
         Gdm = new GraphicsDeviceManager(this);
         // Typically you would load a config here...
@@ -36,14 +33,19 @@ internal class Game : XnaGame
         Content.RootDirectory = "Content";
     }
 
+    public GraphicsDeviceManager Gdm { get; }
+    public Camera Camera { get; private set; }
+    public InputManager InputManager { get; private set; }
+    public SpriteBatch SpriteBatch { get; private set; }
+    public TextureManager TextureManager { get; private set; }
+    public CameraController CameraController { get; private set; }
+
     protected override void Initialize()
     {
         base.Initialize();
 
         World = World.Create();
         SystemGroup = new SystemGroup();
-        InputManager = new InputManager();
-        Camera = new Camera(InputManager, GraphicsDevice.Viewport);
 
         Window.ClientSizeChanged += (sender, args) => { Camera.Viewport = GraphicsDevice.Viewport; };
 
@@ -64,6 +66,15 @@ internal class Game : XnaGame
         //SystemGroup.Add(new MovementSystem(World));
         SystemGroup.Add(new SpriteRendererSystem(World, TextureManager, SpriteBatch));
         SystemGroup.Initialize();
+
+        Camera = new Camera(this);
+        InputManager = new InputManager();
+        InputManager.RegisterAction("Left", new KeyPressedCondition(Keys.Q));
+        InputManager.RegisterAction("Right", new KeyPressedCondition(Keys.D));
+        InputManager.RegisterAction("Up", new KeyPressedCondition(Keys.Z));
+        InputManager.RegisterAction("Down", new KeyPressedCondition(Keys.S));
+
+        CameraController = new CameraController(InputManager, Camera);
     }
 
     protected override void LoadContent()
@@ -92,7 +103,6 @@ internal class Game : XnaGame
         base.UnloadContent();
 
         SpriteBatch.Dispose();
-        TestTexture?.Dispose();
     }
 
     protected override void OnExiting(object sender, EventArgs args)
@@ -107,14 +117,14 @@ internal class Game : XnaGame
         var deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
         // PreUpdate //
+        Camera.Update();
+        InputManager.Update();
         SystemGroup.BeforeUpdate(deltaTime);
-        Camera.BeforeUpdate(deltaTime);
 
         // Update //
         base.Update(gameTime);
-        InputManager.Update(deltaTime);
-        Camera.Update(deltaTime);
         SystemGroup.Update(deltaTime);
+        CameraController.Update(deltaTime);
 
         // PostUpdate //
         SystemGroup.AfterUpdate(deltaTime);
@@ -135,6 +145,5 @@ internal class Game : XnaGame
         base.Draw(gameTime);
         SystemGroup.Render();
         SpriteBatch.End();
-        Console.WriteLine("FPS: " + (int)(1d / gameTime.ElapsedGameTime.TotalSeconds));
     }
 }

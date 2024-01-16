@@ -1,25 +1,23 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using TinyFactory.Engine.Core.Interfaces;
-using TinyFactory.Engine.Input;
 
 namespace TinyFactory.Engine.Core;
 
-public class Camera : IPreUpdatable, IUpdatable
+public class Camera
 {
-    protected InputManager InputManager;
-
+    private TinyFactory.Core core;
+    private float deltaTime;
     private float zoom;
 
-    public Camera(InputManager inputManager, Viewport viewport)
+    public Camera(TinyFactory.Core core)
     {
+        this.core = core;
         X = 0;
         Y = 0;
-        Viewport = viewport;
+        Viewport = core.GraphicsDevice.Viewport;
         Zoom = 1;
-        InputManager = inputManager;
+        deltaTime = 0;
     }
 
     public Matrix Transform { get; private set; }
@@ -33,9 +31,7 @@ public class Camera : IPreUpdatable, IUpdatable
         set => zoom = value < 0.05f ? 0.05f : value;
     }
 
-    #region IPreUpdatable Members
-
-    public void BeforeUpdate(in float deltaTime)
+    public void Update()
     {
         Transform = Matrix.CreateTranslation(-X, -Y, 0) *
                     Matrix.CreateScale(Math.Max(
@@ -44,26 +40,4 @@ public class Camera : IPreUpdatable, IUpdatable
                     )) *
                     Matrix.CreateTranslation(Viewport.Width / 2f, Viewport.Height / 2f, 0);
     }
-
-    #endregion
-
-    #region IUpdatable Members
-
-    public void Update(in float deltaTime)
-    {
-        int moveX = 0, moveY = 0;
-
-        if (InputManager.IsKey(Keys.Q)) moveX -= 1;
-        if (InputManager.IsKey(Keys.D)) moveX += 1;
-        if (InputManager.IsKey(Keys.Z)) moveY -= 1;
-        if (InputManager.IsKey(Keys.S)) moveY += 1;
-
-        var mouseWheelDelta = InputManager.GetMouseWheelDelta();
-        if (Math.Abs(mouseWheelDelta) > 0.1f) Zoom -= mouseWheelDelta;
-
-        X += deltaTime * moveX * 5;
-        Y += deltaTime * moveY * 5;
-    }
-
-    #endregion
 }

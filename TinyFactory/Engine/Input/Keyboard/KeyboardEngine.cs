@@ -2,11 +2,13 @@
 
 namespace TinyFactory.Engine.Input.Keyboard;
 
-public class KeyboardEngine: IInputEngine
+public class KeyboardEngine : IInputEngine
 {
     public KeyboardState PreviousState { get; private set; }
     public KeyboardState CurrentState { get; private set; }
-    
+
+    #region IInputEngine Members
+
     public void Setup(InputManager inputManager)
     {
         PreviousState = Microsoft.Xna.Framework.Input.Keyboard.GetState();
@@ -19,11 +21,13 @@ public class KeyboardEngine: IInputEngine
         CurrentState = Microsoft.Xna.Framework.Input.Keyboard.GetState();
     }
 
+    #endregion
+
     public bool IsKeyPressed(Keys key)
     {
         return CurrentState.IsKeyDown(key);
     }
-    
+
     public bool WasKeyPressed(Keys key)
     {
         return PreviousState.IsKeyDown(key);
