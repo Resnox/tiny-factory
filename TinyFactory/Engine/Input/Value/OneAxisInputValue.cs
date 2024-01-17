@@ -10,10 +10,10 @@ public readonly struct OneAxisInputValue : IInputValue<float>
         this.leftAction = leftAction;
         this.rightAction = rightAction;
     }
-    
-    public OneAxisInputValue(InputManager inputManager, string leftName, string rightName): this(inputManager.GetAction(leftName), inputManager.GetAction(rightName))
+
+    public OneAxisInputValue(InputManager inputManager, string leftName, string rightName) : this(
+        inputManager.GetAction(leftName), inputManager.GetAction(rightName))
     {
-        
     }
 
     #region IInputValue<float> Members

@@ -2,7 +2,7 @@
 
 namespace TinyFactory.Engine.Input.Value;
 
-public readonly struct TwoAxisInputValue: IInputValue<Vector2>
+public readonly struct TwoAxisInputValue : IInputValue<Vector2>
 {
     private readonly InputAction leftAction;
     private readonly InputAction rightAction;
@@ -17,10 +17,11 @@ public readonly struct TwoAxisInputValue: IInputValue<Vector2>
         this.upAction = upAction;
         this.downAction = downAction;
     }
-    
-    public TwoAxisInputValue(InputManager inputManager, string leftName, string rightName, string upName, string downName): this(inputManager.GetAction(leftName), inputManager.GetAction(rightName), inputManager.GetAction(upName), inputManager.GetAction(downName))
+
+    public TwoAxisInputValue(InputManager inputManager, string leftName, string rightName, string upName,
+        string downName) : this(inputManager.GetAction(leftName), inputManager.GetAction(rightName),
+        inputManager.GetAction(upName), inputManager.GetAction(downName))
     {
-        
     }
 
     public Vector2 GetValue()
