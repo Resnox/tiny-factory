@@ -1,4 +1,4 @@
-﻿namespace TinyFactory.Engine.NewInput.Condition;
+﻿namespace TinyFactory.Engine.Input.Condition;
 
 public abstract class InputCondition
 {

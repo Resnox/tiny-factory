@@ -1,52 +1,46 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Dynamic;
-using TinyFactory.Engine.Input.Keyboard;
-using TinyFactory.Engine.Input.Mouse;
+using TinyFactory.Engine.Input.Engine;
 
 namespace TinyFactory.Engine.Input;
 
-public class InputManager : DynamicObject
+public class InputManager
 {
-    private readonly Dictionary<string, InputAction> inputActions = new();
-    private readonly Dictionary<string, IInputEngine> inputEngines = new();
-
-    public InputManager()
-    {
-        RegisterEngine("keyboard", new KeyboardEngine());
-        RegisterEngine("mouse", new KeyboardEngine());
-    }
-
-    public KeyboardEngine Keyboard => (KeyboardEngine)GetEngine("keyboard");
-    public MouseEngine Mouse => (MouseEngine)GetEngine("mouse");
+    private readonly Dictionary<Type, ActionsMap> actionsMaps = new();
+    private readonly Dictionary<Type, InputEngine> inputEngines = new();
 
     public void Update()
     {
         foreach (var inputEngine in inputEngines.Values) inputEngine.Update();
-        foreach (var inputAction in inputActions.Values) inputAction.Update(this);
+        foreach (var inputAction in actionsMaps.Values) inputAction.Update();
     }
 
-    public void RegisterAction(string name, params IInputCondition[] conditions)
+    public void RegisterActionMap<T>(ActionsMap actionsMap) where T : ActionsMap
     {
-        inputActions[name] = new InputAction(conditions);
+        if (Activator.CreateInstance(typeof(T), this) is not ActionsMap actionMap) return;
+
+        actionsMaps[typeof(T)] = actionMap;
     }
 
-    public InputAction GetAction(string actionName)
+    public T GetActionMap<T>() where T : ActionsMap
     {
-        if (inputActions.TryGetValue(actionName, out var value)) return value;
+        if (actionsMaps.TryGetValue(typeof(T), out var value)) return (T)value;
 
-        throw new ArgumentException($"{actionName} unknown");
+        throw new ArgumentException($"{typeof(T)} unknown");
     }
 
-    public void RegisterEngine(string name, IInputEngine engine)
+    public void RegisterEngine<T>() where T : InputEngine
     {
-        inputEngines[name] = engine;
+        if (Activator.CreateInstance(typeof(T), this) is not InputEngine engine) return;
+
+        engine.Setup();
+        inputEngines[typeof(T)] = engine;
     }
 
-    public IInputEngine GetEngine(string engineName)
+    public T GetEngine<T>() where T : InputEngine
     {
-        if (inputEngines.TryGetValue(engineName, out var value)) return value;
+        if (inputEngines.TryGetValue(typeof(T), out var value)) return (T)value;
 
-        throw new ArgumentException($"{engineName} unknown");
+        throw new ArgumentException($"{typeof(T)} unknown");
     }
 }

@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using TinyFactory.Engine.NewInput.Enum;
+using TinyFactory.Engine.Input.Enum;
 
-namespace TinyFactory.Engine.NewInput.Engine;
+namespace TinyFactory.Engine.Input.Engine;
 
 public class Mouse : InputEngine
 {

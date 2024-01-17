@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Input;
 
-namespace TinyFactory.Engine.NewInput.Engine;
+namespace TinyFactory.Engine.Input.Engine;
 
 public class Keyboard : InputEngine
 {

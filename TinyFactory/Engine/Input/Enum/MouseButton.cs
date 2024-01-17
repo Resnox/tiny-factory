@@ -1,4 +1,4 @@
-﻿namespace TinyFactory.Engine.NewInput.Enum;
+﻿namespace TinyFactory.Engine.Input.Enum;
 
 public enum MouseButton
 {

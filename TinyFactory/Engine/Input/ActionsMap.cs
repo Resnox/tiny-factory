@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace TinyFactory.Engine.NewInput;
+namespace TinyFactory.Engine.Input;
 
 public abstract class ActionsMap
 {

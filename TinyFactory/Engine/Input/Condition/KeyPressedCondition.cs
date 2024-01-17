@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Input;
-using Keyboard = TinyFactory.Engine.NewInput.Engine.Keyboard;
+using Keyboard = TinyFactory.Engine.Input.Engine.Keyboard;
 
-namespace TinyFactory.Engine.NewInput.Condition;
+namespace TinyFactory.Engine.Input.Condition;
 
 public class KeyPressedCondition : InputCondition
 {

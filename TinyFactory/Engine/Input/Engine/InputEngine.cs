@@ -1,4 +1,4 @@
-﻿namespace TinyFactory.Engine.NewInput.Engine;
+﻿namespace TinyFactory.Engine.Input.Engine;
 
 public abstract class InputEngine
 {

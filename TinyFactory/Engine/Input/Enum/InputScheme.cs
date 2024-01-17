@@ -1,4 +1,4 @@
-﻿namespace TinyFactory.Engine.Input;
+﻿namespace TinyFactory.Engine.Input.Enum;
 
 public enum InputScheme
 {
