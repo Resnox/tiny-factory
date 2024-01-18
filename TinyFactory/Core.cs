@@ -69,13 +69,20 @@ public class Core : XnaGame
         SystemGroup.Initialize();
 
         InputManager = new InputManager();
-        InputManager.RegisterActionMap("Camera").RegisterAction("Move", new TwoAxisComposite(
-            InputManager.GetEngine<Keyboard>().PressingKey(Keys.Q),
-            InputManager.GetEngine<Keyboard>().PressingKey(Keys.D),
-            InputManager.GetEngine<Keyboard>().PressingKey(Keys.Z),
-            InputManager.GetEngine<Keyboard>().PressingKey(Keys.S)
-        ));
-        
+        InputManager.RegisterActionMap("Camera").RegisterAction("Move",
+            new TwoAxisComposite(
+                InputManager.GetEngine<Keyboard>().PressingKey(Keys.Q),
+                InputManager.GetEngine<Keyboard>().PressingKey(Keys.D),
+                InputManager.GetEngine<Keyboard>().PressingKey(Keys.Z),
+                InputManager.GetEngine<Keyboard>().PressingKey(Keys.S)
+            ), new TwoAxisComposite(
+                InputManager.GetEngine<Keyboard>().PressingKey(Keys.Left),
+                InputManager.GetEngine<Keyboard>().PressingKey(Keys.Right),
+                InputManager.GetEngine<Keyboard>().PressingKey(Keys.Up),
+                InputManager.GetEngine<Keyboard>().PressingKey(Keys.Down)
+            )
+        );
+
         Camera = new Camera(this);
         CameraController = new CameraController(InputManager, Camera);
     }

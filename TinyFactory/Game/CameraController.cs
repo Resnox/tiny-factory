@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using TinyFactory.Engine.Core;
 using TinyFactory.Engine.Input;
 

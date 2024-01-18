@@ -16,20 +16,19 @@ public class ActionsMap
 
     public InputAction GetAction(string name)
     {
-        if (actions.TryGetValue(name, out var value))
-        {
-            return value;
-        };
+        if (actions.TryGetValue(name, out var value)) return value;
+        ;
 
         throw new ArgumentException($"{name} unknown");
     }
 
-    public ActionsMap RegisterAction(string name, IInputValue inputBinding)
+    public ActionsMap RegisterAction(string name, params IInputValue[] inputBindings)
     {
-        if (actions.TryGetValue(name, out var action))
-            action.Add(inputBinding);
-        else
-            actions[name] = new InputAction(inputBinding);
+        foreach (var inputBinding in inputBindings)
+            if (actions.TryGetValue(name, out var action))
+                action.Add(inputBinding);
+            else
+                actions[name] = new InputAction(inputBinding);
 
         return this;
     }
