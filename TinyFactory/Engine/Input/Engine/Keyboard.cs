@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework.Input;
+using TinyFactory.Engine.Input.Binding;
 
 namespace TinyFactory.Engine.Input.Engine;
 
@@ -41,5 +42,10 @@ public class Keyboard : InputEngine
     public bool WasKeyReleased(Keys key)
     {
         return PreviousState.IsKeyUp(key);
+    }
+
+    public KeyBinding PressingKey(Keys key)
+    {
+        return new KeyBinding(this, key);
     }
 }

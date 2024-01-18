@@ -6,27 +6,31 @@ namespace TinyFactory.Engine.Input;
 
 public class InputManager
 {
-    private readonly Dictionary<Type, ActionsMap> actionsMaps = new();
+    private readonly Dictionary<string, ActionsMap> actionsMaps = new();
     private readonly Dictionary<Type, InputEngine> inputEngines = new();
+
+    public InputManager()
+    {
+        RegisterEngine<Keyboard>();
+        RegisterEngine<Mouse>();
+    }
 
     public void Update()
     {
         foreach (var inputEngine in inputEngines.Values) inputEngine.Update();
-        foreach (var inputAction in actionsMaps.Values) inputAction.Update();
     }
 
-    public void RegisterActionMap<T>(ActionsMap actionsMap) where T : ActionsMap
+    public ActionsMap RegisterActionMap(string name)
     {
-        if (Activator.CreateInstance(typeof(T), this) is not ActionsMap actionMap) return;
-
-        actionsMaps[typeof(T)] = actionMap;
+        actionsMaps[name] = new ActionsMap(this);
+        return actionsMaps[name];
     }
 
-    public T GetActionMap<T>() where T : ActionsMap
+    public ActionsMap GetActionMap(string name)
     {
-        if (actionsMaps.TryGetValue(typeof(T), out var value)) return (T)value;
+        if (actionsMaps.TryGetValue(name, out var value)) return value;
 
-        throw new ArgumentException($"{typeof(T)} unknown");
+        throw new ArgumentException($"{name} unknown");
     }
 
     public void RegisterEngine<T>() where T : InputEngine

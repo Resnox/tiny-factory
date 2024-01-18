@@ -1,37 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
+using TinyFactory.Engine.Input.Value;
 
 namespace TinyFactory.Engine.Input;
 
-public abstract class ActionsMap
+public class ActionsMap
 {
-    public Dictionary<string, InputAction> actions = new();
-    public InputManager manager;
+    private readonly Dictionary<string, InputAction> actions = new();
+    private readonly InputManager manager;
 
     public ActionsMap(InputManager inputManager)
     {
         manager = inputManager;
     }
 
-    public bool Enabled { get; set; }
-
-    public void Update()
+    public InputAction GetAction(string name)
     {
-        if (!Enabled) return;
-        foreach (var action in actions.Values) action.Update();
+        if (actions.TryGetValue(name, out var value))
+        {
+            return value;
+        };
+
+        throw new ArgumentException($"{name} unknown");
     }
 
-    public T GetAction<T>(string name) where T : InputAction
+    public ActionsMap RegisterAction(string name, IInputValue inputBinding)
     {
-        if (actions.TryGetValue(name, out var value)) return (T)value;
+        if (actions.TryGetValue(name, out var action))
+            action.Add(inputBinding);
+        else
+            actions[name] = new InputAction(inputBinding);
 
-        throw new ArgumentException($"{typeof(T)} unknown");
-    }
-
-    public void RegisterAction<T>(string name) where T : InputAction
-    {
-        if (Activator.CreateInstance(typeof(T), this) is not InputAction actionMap) return;
-
-        actions[name] = actionMap;
+        return this;
     }
 }

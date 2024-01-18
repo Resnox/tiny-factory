@@ -1,20 +1,24 @@
-﻿using TinyFactory.Engine.Input.Action;
+﻿using TinyFactory.Engine.Input.Value;
 
 namespace TinyFactory.Engine.Input.Composite;
 
-public class OneAxisComposite: IInputValue<float>
+public class OneAxisComposite : IInputValue<float>
 {
-    private IInputValue<bool> left;
-    private IInputValue<bool> right;
+    private readonly IInputValue<float> negative;
+    private readonly IInputValue<float> positive;
 
-    public OneAxisComposite(IInputValue<bool> left, IInputValue<bool> right)
+    public OneAxisComposite(IInputValue<float> negative, IInputValue<float> positive)
     {
-        this.left = left;
-        this.right = right;
+        this.negative = negative;
+        this.positive = positive;
     }
+
+    #region IInputValue<float> Members
 
     public float GetValue()
     {
-        return (right.GetValue() ? 1 : 0) - (left.GetValue() ? 1 : 0);
+        return positive.GetValue() - negative.GetValue();
     }
+
+    #endregion
 }

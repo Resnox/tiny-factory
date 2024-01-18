@@ -9,9 +9,10 @@ using TinyFactory.Engine.ECS;
 using TinyFactory.Engine.ECS.Component;
 using TinyFactory.Engine.ECS.System;
 using TinyFactory.Engine.Input;
-using TinyFactory.Engine.Input.Conditions;
+using TinyFactory.Engine.Input.Composite;
 using TinyFactory.Engine.Texture;
 using TinyFactory.Game;
+using Keyboard = TinyFactory.Engine.Input.Engine.Keyboard;
 using XnaGame = Microsoft.Xna.Framework.Game;
 
 namespace TinyFactory;
@@ -67,13 +68,15 @@ public class Core : XnaGame
         SystemGroup.Add(new SpriteRendererSystem(World, TextureManager, SpriteBatch));
         SystemGroup.Initialize();
 
-        Camera = new Camera(this);
         InputManager = new InputManager();
-        InputManager.RegisterAction("Left", new KeyPressedCondition(Keys.Q));
-        InputManager.RegisterAction("Right", new KeyPressedCondition(Keys.D));
-        InputManager.RegisterAction("Up", new KeyPressedCondition(Keys.Z));
-        InputManager.RegisterAction("Down", new KeyPressedCondition(Keys.S));
-
+        InputManager.RegisterActionMap("Camera").RegisterAction("Move", new TwoAxisComposite(
+            InputManager.GetEngine<Keyboard>().PressingKey(Keys.Q),
+            InputManager.GetEngine<Keyboard>().PressingKey(Keys.D),
+            InputManager.GetEngine<Keyboard>().PressingKey(Keys.Z),
+            InputManager.GetEngine<Keyboard>().PressingKey(Keys.S)
+        ));
+        
+        Camera = new Camera(this);
         CameraController = new CameraController(InputManager, Camera);
     }
 

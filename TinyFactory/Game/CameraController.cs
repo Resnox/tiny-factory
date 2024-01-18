@@ -1,6 +1,7 @@
-﻿using TinyFactory.Engine.Core;
+﻿using System;
+using Microsoft.Xna.Framework;
+using TinyFactory.Engine.Core;
 using TinyFactory.Engine.Input;
-using TinyFactory.Engine.Input.Value;
 
 namespace TinyFactory.Game;
 
@@ -18,7 +19,10 @@ public class CameraController
 
     public void Update(float deltaTime)
     {
-        var movement = new TwoAxisInputValue(inputManager, "Left", "Right", "Up", "Down").GetValue();
+        var movement = inputManager
+            .GetActionMap("Camera")
+            .GetAction("Move")
+            .GetValue<Vector2>();
 
         camera.X += deltaTime * movement.X * movementSpeed;
         camera.Y += deltaTime * movement.Y * movementSpeed;
