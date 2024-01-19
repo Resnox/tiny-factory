@@ -9,8 +9,8 @@ public class Keyboard : InputEngine
     {
     }
 
-    public KeyboardState PreviousState { get; private set; }
-    public KeyboardState CurrentState { get; private set; }
+    private KeyboardState PreviousState { get; set; }
+    private KeyboardState CurrentState { get; set; }
 
     public override void Setup()
     {
@@ -44,8 +44,8 @@ public class Keyboard : InputEngine
         return PreviousState.IsKeyUp(key);
     }
 
-    public KeyBinding PressingKey(Keys key)
+    public KeyButtonBinding PressingKey(Keys key)
     {
-        return new KeyBinding(this, key);
+        return new KeyButtonBinding(this, key);
     }
 }

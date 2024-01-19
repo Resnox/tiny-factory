@@ -20,7 +20,6 @@ public class InputAction
 
     public T GetValue<T>()
     {
-        Console.WriteLine(values.Count);
         foreach (var value in values)
             if (value is IInputValue<T> inputValue &&
                 !EqualityComparer<T>.Default.Equals(inputValue.GetValue(), default))

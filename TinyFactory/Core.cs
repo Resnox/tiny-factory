@@ -10,8 +10,10 @@ using TinyFactory.Engine.ECS.Component;
 using TinyFactory.Engine.ECS.System;
 using TinyFactory.Engine.Input;
 using TinyFactory.Engine.Input.Composite;
+using TinyFactory.Engine.Input.Enum;
 using TinyFactory.Engine.Texture;
 using TinyFactory.Game;
+using GamePad = TinyFactory.Engine.Input.Engine.GamePad;
 using Keyboard = TinyFactory.Engine.Input.Engine.Keyboard;
 using XnaGame = Microsoft.Xna.Framework.Game;
 
@@ -75,12 +77,8 @@ public class Core : XnaGame
                 InputManager.GetEngine<Keyboard>().PressingKey(Keys.D),
                 InputManager.GetEngine<Keyboard>().PressingKey(Keys.Z),
                 InputManager.GetEngine<Keyboard>().PressingKey(Keys.S)
-            ), new TwoAxisComposite(
-                InputManager.GetEngine<Keyboard>().PressingKey(Keys.Left),
-                InputManager.GetEngine<Keyboard>().PressingKey(Keys.Right),
-                InputManager.GetEngine<Keyboard>().PressingKey(Keys.Up),
-                InputManager.GetEngine<Keyboard>().PressingKey(Keys.Down)
-            )
+            ), 
+            InputManager.GetEngine<GamePad>().Joystick(GamePadJoystick.LeftStick, PlayerIndex.One)
         );
 
         Camera = new Camera(this);

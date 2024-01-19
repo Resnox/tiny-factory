@@ -11,8 +11,8 @@ public class Mouse : InputEngine
     {
     }
 
-    public MouseState PreviousState { get; private set; }
-    public MouseState CurrentState { get; private set; }
+    private MouseState PreviousState { get; set; }
+    private MouseState CurrentState { get; set; }
 
     public int CurrentScrollWheelValue => CurrentState.ScrollWheelValue;
     public int PreviousScrollWheelValue => PreviousState.ScrollWheelValue;
@@ -57,12 +57,12 @@ public class Mouse : InputEngine
         return GetButtonState(button, PreviousState) == ButtonState.Pressed;
     }
 
-    public void SetMouseCoordinates(int x, int y)
+    public static void SetMouseCoordinates(int x, int y)
     {
         Microsoft.Xna.Framework.Input.Mouse.SetPosition(x, y);
     }
 
-    private ButtonState GetButtonState(MouseButton button, MouseState state)
+    private static ButtonState GetButtonState(MouseButton button, MouseState state)
     {
         return button switch
         {

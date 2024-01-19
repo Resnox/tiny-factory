@@ -11,8 +11,7 @@ public class InputManager
 
     public InputManager()
     {
-        RegisterEngine<Keyboard>();
-        RegisterEngine<Mouse>();
+        
     }
 
     public void Update()
@@ -45,6 +44,9 @@ public class InputManager
     {
         if (inputEngines.TryGetValue(typeof(T), out var value)) return (T)value;
 
+        RegisterEngine<T>();
+        if (inputEngines.TryGetValue(typeof(T), out var valueSecondTry)) return (T)valueSecondTry;
+        
         throw new ArgumentException($"{typeof(T)} unknown");
     }
 }

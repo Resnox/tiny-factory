@@ -24,6 +24,6 @@ public class CameraController
             .GetValue<Vector2>();
 
         camera.X += deltaTime * movement.X * movementSpeed;
-        camera.Y += deltaTime * movement.Y * movementSpeed;
+        camera.Y += deltaTime * -movement.Y * movementSpeed;
     }
 }

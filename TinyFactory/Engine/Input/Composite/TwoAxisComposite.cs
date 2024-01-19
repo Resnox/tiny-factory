@@ -15,7 +15,7 @@ public class TwoAxisComposite : IInputValue<Vector2>
     }
 
     public TwoAxisComposite(IInputValue<float> left, IInputValue<float> right, IInputValue<float> up,
-        IInputValue<float> down) : this(new OneAxisComposite(left, right), new OneAxisComposite(up, down))
+        IInputValue<float> down) : this(new OneAxisComposite(left, right), new OneAxisComposite(down, up))
     {
     }
 
