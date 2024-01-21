@@ -98,17 +98,17 @@ public class GamePad : InputEngine
             _ => throw new ArgumentOutOfRangeException(nameof(button), button, null)
         };
     }
-    
+
     public GamePadButtonBinding Button(GamePadButton button, PlayerIndex playerIndex)
     {
         return new GamePadButtonBinding(this, button, playerIndex);
     }
-    
+
     public GamePadTriggerBinding Trigger(GamePadTrigger trigger, PlayerIndex playerIndex)
     {
         return new GamePadTriggerBinding(this, trigger, playerIndex);
     }
-    
+
     public GamePadJoystickBinding Joystick(GamePadJoystick joystick, PlayerIndex playerIndex)
     {
         return new GamePadJoystickBinding(this, joystick, playerIndex);

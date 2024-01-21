@@ -9,11 +9,6 @@ public class InputManager
     private readonly Dictionary<string, ActionsMap> actionsMaps = new();
     private readonly Dictionary<Type, InputEngine> inputEngines = new();
 
-    public InputManager()
-    {
-        
-    }
-
     public void Update()
     {
         foreach (var inputEngine in inputEngines.Values) inputEngine.Update();
@@ -46,7 +41,7 @@ public class InputManager
 
         RegisterEngine<T>();
         if (inputEngines.TryGetValue(typeof(T), out var valueSecondTry)) return (T)valueSecondTry;
-        
+
         throw new ArgumentException($"{typeof(T)} unknown");
     }
 }

@@ -17,7 +17,6 @@ public class ActionsMap
     public InputAction GetAction(string name)
     {
         if (actions.TryGetValue(name, out var value)) return value;
-        ;
 
         throw new ArgumentException($"{name} unknown");
     }

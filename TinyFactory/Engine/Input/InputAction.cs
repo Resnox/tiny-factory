@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using TinyFactory.Engine.Input.Value;
 
 namespace TinyFactory.Engine.Input;
