@@ -38,9 +38,7 @@ internal class Program
                 ));
             }
 
-        using (var game = new Core())
-        {
-            game.Run();
-        }
+        using var game = new GameCore();
+        game.Run();
     }
 }

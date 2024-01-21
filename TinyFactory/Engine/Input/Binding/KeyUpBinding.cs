@@ -4,12 +4,12 @@ using Keyboard = TinyFactory.Engine.Input.Engine.Keyboard;
 
 namespace TinyFactory.Engine.Input.Binding;
 
-public class KeyButtonBinding : IInputValue<float>
+public class KeyUpBinding : IInputValue<float>
 {
     private readonly Keyboard engine;
     private readonly Keys key;
 
-    public KeyButtonBinding(Keyboard engine, Keys key)
+    public KeyUpBinding(Keyboard engine, Keys key)
     {
         this.engine = engine;
         this.key = key;
@@ -19,7 +19,7 @@ public class KeyButtonBinding : IInputValue<float>
 
     public float GetValue()
     {
-        return engine.IsKeyPressed(key) ? 1f : 0f;
+        return engine.IsKeyReleased(key) && engine.WasKeyPressed(key) ? 1f : 0f;
     }
 
     #endregion

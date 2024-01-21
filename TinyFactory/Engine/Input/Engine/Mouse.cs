@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using TinyFactory.Engine.Input.Binding;
 using TinyFactory.Engine.Input.Enum;
 
 namespace TinyFactory.Engine.Input.Engine;
@@ -73,5 +74,20 @@ public class Mouse : InputEngine
             MouseButton.XButton2 => state.XButton2,
             _ => throw new ArgumentOutOfRangeException(nameof(button), button, null)
         };
+    }
+
+    public MouseDeltaBinding MouseDelta()
+    {
+        return new MouseDeltaBinding(this);
+    }
+    
+    public MousePositionBinding MousePosition()
+    {
+        return new MousePositionBinding(this);
+    }
+    
+    public MouseWheelBinding WheelDelta()
+    {
+        return new MouseWheelBinding(this);
     }
 }

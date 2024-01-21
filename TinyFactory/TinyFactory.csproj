@@ -47,8 +47,5 @@
     <ItemGroup>
         <PackageReference Include="Arch" Version="1.2.7.1-alpha"/>
     </ItemGroup>
-    <ItemGroup>
-        <Folder Include="Game\Input\"/>
-    </ItemGroup>
 
 </Project>

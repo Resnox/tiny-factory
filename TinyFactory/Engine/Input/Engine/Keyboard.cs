@@ -44,8 +44,18 @@ public class Keyboard : InputEngine
         return PreviousState.IsKeyUp(key);
     }
 
-    public KeyButtonBinding PressingKey(Keys key)
+    public KeyBinding KeyBinding(Keys key)
     {
-        return new KeyButtonBinding(this, key);
+        return new KeyBinding(this, key);
+    }
+    
+    public KeyUpBinding KeyUpBinding(Keys key)
+    {
+        return new KeyUpBinding(this, key);
+    }
+    
+    public KeyDownBinding KeyDownBinding(Keys key)
+    {
+        return new KeyDownBinding(this, key);
     }
 }

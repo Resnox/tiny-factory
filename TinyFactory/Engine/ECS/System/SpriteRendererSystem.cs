@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System;
+using System.Runtime.CompilerServices;
 using Arch.Core;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -10,7 +11,7 @@ namespace TinyFactory.Engine.ECS.System;
 
 public class SpriteRendererSystem : AbstractSystem, IRenderable
 {
-    private readonly QueryDescription queryDescription = new QueryDescription().WithAll<Position, Sprite>();
+    private readonly QueryDescription queryDescription = new QueryDescription().WithAll<Transform, Sprite>();
     private readonly SpriteBatch spriteBatch;
     private readonly TextureManager textureManager;
 
@@ -26,14 +27,14 @@ public class SpriteRendererSystem : AbstractSystem, IRenderable
     public void Render()
     {
         var render = new RenderJob(textureManager, spriteBatch);
-        World.InlineQuery<RenderJob, Position, Sprite>(queryDescription, ref render);
+        World.InlineQuery<RenderJob, Transform, Sprite>(queryDescription, ref render);
     }
 
     #endregion
 
     #region Nested type: RenderJob
 
-    private readonly struct RenderJob : IForEach<Position, Sprite>
+    private readonly struct RenderJob : IForEach<Transform, Sprite>
     {
         private readonly TextureManager textureManager;
         private readonly SpriteBatch spriteBatch;
@@ -45,14 +46,20 @@ public class SpriteRendererSystem : AbstractSystem, IRenderable
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void Update(ref Position transform, ref Sprite sprite)
+        public void Update(ref Transform transform, ref Sprite sprite)
         {
-            var texture = textureManager[sprite.TextureIndex];
+            var texture = textureManager.GetTextureByIndex(sprite.TextureIndex);
 
             spriteBatch.Draw(
-                texture,
-                new Rectangle((int)transform.PosX, (int)transform.PosY, 1, 1),
-                sprite.Color
+                texture, 
+                transform.Position, 
+                null, 
+                Color.White, 
+                0f, 
+                Vector2.One / 2f, 
+                1f / MathF.Max(texture.Width, texture.Height), 
+                SpriteEffects.None, 
+                0f
             );
         }
     }

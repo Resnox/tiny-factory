@@ -20,9 +20,10 @@ public class TextureManager
         AddWhitePixelTexture();
     }
 
-    public Texture2D this[int index] => textures[index];
-    public Texture2D this[string textureName] => textures[nameIndex[textureName]];
-
+    public Texture2D GetTextureByIndex(int index) => textures[index];
+    public Texture2D GetTextureByName(string textureName) => textures[nameIndex[textureName]];
+    public int GetTextureIndexByName(string textureName) => nameIndex[textureName];
+    
     public void AddWhitePixelTexture()
     {
         var whitePixel = new Texture2D(graphicsDevice, 1, 1, false, SurfaceFormat.Color);

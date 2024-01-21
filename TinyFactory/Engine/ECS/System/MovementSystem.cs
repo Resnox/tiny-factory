@@ -7,7 +7,7 @@ namespace TinyFactory.Engine.ECS.System;
 
 public class MovementSystem : AbstractSystem, IUpdatable
 {
-    private readonly QueryDescription queryDescription = new QueryDescription().WithAll<Position>();
+    private readonly QueryDescription queryDescription = new QueryDescription().WithAll<Transform>();
 
     public MovementSystem(World world) : base(world)
     {
@@ -18,14 +18,14 @@ public class MovementSystem : AbstractSystem, IUpdatable
     public void Update(in float deltaTime)
     {
         var movementJob = new MoveJob(deltaTime);
-        World.InlineQuery<MoveJob, Position>(in queryDescription, ref movementJob);
+        World.InlineQuery<MoveJob, Transform>(in queryDescription, ref movementJob);
     }
 
     #endregion
 
     #region Nested type: MoveJob
 
-    private readonly struct MoveJob : IForEach<Position>
+    private readonly struct MoveJob : IForEach<Transform>
     {
         private readonly float deltaTime;
 
@@ -35,7 +35,7 @@ public class MovementSystem : AbstractSystem, IUpdatable
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void Update(ref Position position)
+        public void Update(ref Transform transform)
         {
         }
     }
