@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FNA", "FNA\FNA.csproj", "{35253CE1-C864-4CD3-8249-4D1319748E8F}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TinyFactory", "TinyFactory\TinyFactory.csproj", "{F2674EF5-7417-4713-BA15-740802EBC39F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FNA.NetFramework", "FNA\FNA.NetFramework.csproj", "{326E7F94-6B7E-4224-AE92-4C6326A5D9F1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,16 +15,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{35253CE1-C864-4CD3-8249-4D1319748E8F}.Debug|x86.ActiveCfg = Debug|x86
-		{35253CE1-C864-4CD3-8249-4D1319748E8F}.Debug|x86.Build.0 = Debug|x86
-		{35253CE1-C864-4CD3-8249-4D1319748E8F}.Release|x86.ActiveCfg = Release|x86
-		{35253CE1-C864-4CD3-8249-4D1319748E8F}.Release|x86.Build.0 = Release|x86
-		{35253CE1-C864-4CD3-8249-4D1319748E8F}.Debug|x64.ActiveCfg = Debug|x64
-		{35253CE1-C864-4CD3-8249-4D1319748E8F}.Debug|x64.Build.0 = Debug|x64
-		{35253CE1-C864-4CD3-8249-4D1319748E8F}.Release|x64.ActiveCfg = Release|x64
-		{35253CE1-C864-4CD3-8249-4D1319748E8F}.Release|x64.Build.0 = Release|x64
-		{35253CE1-C864-4CD3-8249-4D1319748E8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{35253CE1-C864-4CD3-8249-4D1319748E8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F2674EF5-7417-4713-BA15-740802EBC39F}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{F2674EF5-7417-4713-BA15-740802EBC39F}.Debug|x86.Build.0 = Debug|Any CPU
 		{F2674EF5-7417-4713-BA15-740802EBC39F}.Release|x86.ActiveCfg = Release|Any CPU
@@ -37,6 +27,18 @@ Global
 		{F2674EF5-7417-4713-BA15-740802EBC39F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F2674EF5-7417-4713-BA15-740802EBC39F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F2674EF5-7417-4713-BA15-740802EBC39F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{326E7F94-6B7E-4224-AE92-4C6326A5D9F1}.Debug|x86.ActiveCfg = Debug|x64
+		{326E7F94-6B7E-4224-AE92-4C6326A5D9F1}.Debug|x86.Build.0 = Debug|x64
+		{326E7F94-6B7E-4224-AE92-4C6326A5D9F1}.Release|x86.ActiveCfg = Release|x64
+		{326E7F94-6B7E-4224-AE92-4C6326A5D9F1}.Release|x86.Build.0 = Release|x64
+		{326E7F94-6B7E-4224-AE92-4C6326A5D9F1}.Debug|x64.ActiveCfg = Debug|x64
+		{326E7F94-6B7E-4224-AE92-4C6326A5D9F1}.Debug|x64.Build.0 = Debug|x64
+		{326E7F94-6B7E-4224-AE92-4C6326A5D9F1}.Release|x64.ActiveCfg = Release|x64
+		{326E7F94-6B7E-4224-AE92-4C6326A5D9F1}.Release|x64.Build.0 = Release|x64
+		{326E7F94-6B7E-4224-AE92-4C6326A5D9F1}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{326E7F94-6B7E-4224-AE92-4C6326A5D9F1}.Debug|Any CPU.Build.0 = Debug|x64
+		{326E7F94-6B7E-4224-AE92-4C6326A5D9F1}.Release|Any CPU.ActiveCfg = Release|x64
+		{326E7F94-6B7E-4224-AE92-4C6326A5D9F1}.Release|Any CPU.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = FNA.csproj
